@@ -53,6 +53,8 @@ public class RollingBallTest extends Activity implements SensorEventListener {
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         mCustomDrawableView = new CustomDrawableView(this);
         setContentView(mCustomDrawableView);
         // setContentView(R.layout.main);
@@ -106,6 +108,21 @@ public class RollingBallTest extends Activity implements SensorEventListener {
         //readings being opposite to what we want!
         xPosition -= xS;
         yPosition -= yS;
+
+        if (xPosition > xMax || xPosition < 0) {
+            xVelocity *= -0.5;
+            xS = ((xVelocity / 2) * frameTime);
+            yS = ((yVelocity / 2) * frameTime);
+            xPosition -= xS;
+            yPosition -= yS;
+        }
+        else if (yPosition > yMax || yPosition < 0) {
+            yVelocity *= -0.5;
+            xS = ((xVelocity / 2) * frameTime);
+            yS = ((yVelocity / 2) * frameTime);
+            xPosition -= xS;
+            yPosition -= yS;
+        }
 
         if (xPosition > xMax) {
             xPosition = xMax;
