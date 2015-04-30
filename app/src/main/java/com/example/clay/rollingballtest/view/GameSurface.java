@@ -11,7 +11,6 @@ import com.example.clay.rollingballtest.game.LevelManager;
 import com.example.clay.rollingballtest.models.GameDrawable;
 import com.example.clay.rollingballtest.game.GameLoop;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -65,7 +64,7 @@ public class GameSurface extends SurfaceView {
      * Draws to the canvas
      * @param canvas
      */
-    protected void render(Canvas canvas) {
+    public void render(Canvas canvas) {
         canvas.drawColor(0, PorterDuff.Mode.CLEAR);
         canvas.drawColor(Color.WHITE);
 

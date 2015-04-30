@@ -1,6 +1,7 @@
 package com.example.clay.rollingballtest.game;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
@@ -36,11 +37,12 @@ public class GameMediator {
     public static GameMediator getInstance(Context context) {
         if (instance == null) {
             instance = new GameMediator(context);
+            instance.getFrameBounds();
         }
         else if (context != null) {
             instance.setContext(context);
+            instance.getFrameBounds();
         }
-        instance.getFrameBounds();
         return instance;
     }
 
@@ -48,21 +50,10 @@ public class GameMediator {
      * Gets the frame bounds
      */
     private void getFrameBounds() {
-        try {
-            Display display = ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-            Method getRealScreenWidth = Display.class.getMethod("getRawWidth");
-            Method getRealScreenHeight = Display.class.getMethod("getRawHeight");
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 
-            xMax = (Integer)getRealScreenWidth.invoke(display);
-            yMax = (Integer)getRealScreenHeight.invoke(display);
-
-        } catch (NoSuchMethodException nsme) {
-            Log.e("FRAME METHOD ERROR: ", nsme.getMessage());
-        } catch (IllegalAccessException iae) {
-            Log.e("ILLEGAL ACCESS ERROR: ",  iae.getMessage());
-        } catch (InvocationTargetException ite) {
-            Log.e("INVOCATION ERROR: ",  ite.getMessage());
-        }
+        yMax = Math.round(displayMetrics.heightPixels);
+        xMax = Math.round(displayMetrics.widthPixels);
     }
 
     /**

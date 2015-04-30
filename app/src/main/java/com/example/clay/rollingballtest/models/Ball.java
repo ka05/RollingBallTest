@@ -42,8 +42,8 @@ public class Ball implements GameDrawable, GameSubscriber, GamePublisher {
         this.type = DrawableType.BALL;
         this.gameMediator = GameMediator.getInstance(null);
         this.sensorHandler = gameMediator.getSensorHandler();
-        this.xMax = gameMediator.getXMax();
-        this.yMax = gameMediator.getYMax();
+        this.xMax = gameMediator.getXMax() - image.getWidth();
+        this.yMax = gameMediator.getYMax() - image.getHeight();
         this.setBounds(xStart, yStart);
     }
 
