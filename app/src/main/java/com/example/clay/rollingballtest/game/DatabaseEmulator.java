@@ -10,6 +10,7 @@ import com.example.clay.rollingballtest.models.Coin;
 import com.example.clay.rollingballtest.models.GameDrawable;
 import com.example.clay.rollingballtest.models.Goal;
 import com.example.clay.rollingballtest.models.Obstacle;
+import com.example.clay.rollingballtest.sensors.SensorHandler;
 
 import java.util.ArrayList;
 
@@ -33,7 +34,7 @@ public class DatabaseEmulator {
     }
 
     public ArrayList getLevelObjects() {
-        Goal goal = new Goal(getBitmap(R.mipmap.goal), getXFromPercent(0.9f), getYFromPercent(0.5f));
+        Goal goal = new Goal(getBitmap(R.mipmap.goal), getXFromPercent(0.7f), getYFromPercent(0.7f));
         Coin coin1 = new Coin(getBitmap(R.mipmap.coin), getXFromPercent(0.2f), getYFromPercent(0.2f));
         Coin coin2 = new Coin(getBitmap(R.mipmap.coin), getXFromPercent(0.3f), getYFromPercent(0.3f));
         Coin coin3 = new Coin(getBitmap(R.mipmap.coin), getXFromPercent(0.4f), getYFromPercent(0.4f));

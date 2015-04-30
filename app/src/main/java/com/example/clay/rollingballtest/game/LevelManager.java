@@ -27,6 +27,7 @@ public class LevelManager implements GameSubscriber {
      */
     public LevelManager() {
         this.dbEmulator = new DatabaseEmulator();
+        this.gameMediator = GameMediator.getInstance(null);
         this.getModelsForLevel();
         this.mapBounds();
     }
@@ -38,6 +39,14 @@ public class LevelManager implements GameSubscriber {
     @Override
     public void stateChanged() {
         ballRect = gameBall.getBounds();
+        ArrayList<GameDrawable> copy = new ArrayList<GameDrawable>(drawables);
+        for (GameDrawable drawable : copy) {
+            if (drawable.getType() == DrawableType.BALL) continue;
+            if (ballRect.intersect(drawable.getBounds())) {
+                drawables.remove(drawable);
+                drawable = null;
+            }
+        }
     }
 
     /**
@@ -45,8 +54,8 @@ public class LevelManager implements GameSubscriber {
      *
      * @return an ArrayList of drawables
      */
-    public ArrayList<GameDrawable> getDrawables() {
-        return (ArrayList)drawables;
+    public List<GameDrawable> getDrawables() {
+        return drawables;
     }
 
     /**
@@ -61,19 +70,14 @@ public class LevelManager implements GameSubscriber {
      */
     private void mapBounds() {
         for (GameDrawable drawable : drawables) {
-            if (drawable.getType() == DrawableType.BALL) this.setGameBall(drawable);
+            if (drawable.getType() == DrawableType.BALL) {
+                this.gameBall = (Ball)drawable;
+                gameMediator.getSensorHandler().addSubscriber(this.gameBall);
+                this.gameBall.addSubscriber(this);
+            }
+            else {
 
+            }
         }
-    }
-
-    /**
-     * Sets the game ball in the context
-     * Adds an observer to the game ball
-     *
-     * @param drawable the drawable ball
-     */
-    private void setGameBall(GameDrawable drawable) {
-        this.gameBall = (Ball)drawable;
-        gameBall.addSubscriber(this);
     }
 }

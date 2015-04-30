@@ -9,13 +9,13 @@ import android.graphics.Rect;
  */
 public class Goal implements GameDrawable {
     private final int COLS = 4;
-    private static long SWITCH_SPEED = 20;
+    private static long SWITCH_SPEED = 15;
 
     private Rect bounds;
     private Bitmap image;
     private DrawableType type;
     private int width, height;
-    private long lastDrawn, switchSpeed;
+    private long lastDrawn, switchThreshold;
     private int currentFrame = 0;
 
     /**
@@ -30,6 +30,8 @@ public class Goal implements GameDrawable {
         this.type = DrawableType.GOAL;
         this.width = image.getWidth() / COLS;
         this.height = image.getHeight();
+        this.switchThreshold = 1000 / SWITCH_SPEED;
+        this.lastDrawn = 0;
         this.setBounds(xStart, yStart);
     }
 
@@ -43,7 +45,7 @@ public class Goal implements GameDrawable {
         this.update();
 
         int translateX = width * currentFrame;
-        Rect subset = new Rect(translateX, bounds.top, translateX + width, bounds.bottom);
+        Rect subset = new Rect(translateX, 0, translateX + width, height);
         canvas.drawBitmap(image, subset, bounds, null);
     }
 
@@ -71,7 +73,10 @@ public class Goal implements GameDrawable {
      * Updates the current frame
      */
     private void update() {
-        currentFrame = ++currentFrame % COLS;
+        if (lastDrawn == 0 || (System.currentTimeMillis() - lastDrawn) > switchThreshold) {
+            currentFrame = ++currentFrame % COLS;
+            lastDrawn = System.currentTimeMillis();
+        }
     }
 
     /**
